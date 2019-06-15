@@ -18,23 +18,40 @@ material = material.lower()
 file = material+'.txt'
 
 # Property List
-propNames = np.loadtxt(file,dtype=str,max_rows=1)
+propNames,units = np.loadtxt(file,dtype=str,max_rows=2, delimiter='\t')
 prop_list = {propNames[x]: x for x in range(len(propNames))}
-print('\n',list(prop_list))
+
+# Develop selection options from file
+prop_list_to_print, unit_list_to_print = '',''
+for item in list(prop_list):
+    prop_list_to_print = prop_list_to_print + '\t' + item
+for item in list(units):
+    unit_list_to_print = unit_list_to_print + '\t' + item
+
+print(prop_list_to_print)
+print(unit_list_to_print)
 print('')
 
-# Ask user for desired property
-prop = str(input('Property: '))
 
-# Load values in desired columns
-temp, yValues = np.loadtxt(file, dtype=float, delimiter='\t', skiprows=1, usecols=(0,)+(prop_list[prop],), unpack=True)
+# Trap User until they give a listed option
+while True:
+    try:
+        prop = str(input('Property: ')) # Ask user for desired property
+        # Load values in desired columns
+        temp, yValues = np.loadtxt(file, dtype=float, delimiter='\t', skiprows=2, usecols=(0,)+(prop_list[prop],), unpack=True)        
+        break
+    except (ValueError, KeyError):
+        print('Oops! Not an available option.')
+        
 
 ## Begin Interpolation
-if target > temp[-1] or target < temp[0]: # Check Target is within in table
+if target > temp[-1] or target < temp[0]: # Check Target is within the table
     raise ValueError("Oops! That temperature is not in this table")
     
 if (target in temp): # Test for exact match in table
-    print('\n',target, yValues[np.where(temp==target)[0][0]])
+    print('')
+    print('Temp','\t', prop)
+    print(target,'\t', yValues[np.where(temp==target)[0][0]])
 else:
     for item in range(len(temp)): # Cycle through the list until target is between values
         if target > temp[item]:
@@ -49,4 +66,6 @@ else:
     
             target_y = (target - x1)/(x2-x1)*(y2 - y1) + y1 # Interpolate
 
-    print('\n',target, target_y)
+    print('')
+    print('Temp', '\t', prop)
+    print(target, '\t', target_y)
