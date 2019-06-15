@@ -14,16 +14,19 @@ elif v > 2 or v < 1:
 material = str(input('Material: '))
 material = material.lower()
 
+# Determines file to look at
+file = material+'.txt'
+
+# Property List
+propNames = np.loadtxt(file,dtype=str,max_rows=1)
+prop_list = {propNames[x]: x for x in range(len(propNames))}
+print('\n',list(prop_list))
+print('')
+
 # Ask user for desired property
 prop = str(input('Property: '))
 
-# Property List
-prop_list = {'rho':1, 
-             'cp':2}
-
-
-file = material+'.txt'
-
+# Load values in desired columns
 temp, yValues = np.loadtxt(file, dtype=float, delimiter='\t', skiprows=1, usecols=(0,)+(prop_list[prop],), unpack=True)
 
 ## Begin Interpolation
