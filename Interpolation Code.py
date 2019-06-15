@@ -1,14 +1,23 @@
 import numpy as np
 
+
 # Ask user for target temp. Convert to kelvin if Celsius.
 target = float(input('Temperature: '))
-v = int(input('If kelvin enter 1. If Celsius enter 2: '))
 
 # Check to make sure selection is either 1 or 2
+while True:
+    try:
+        v = int(input('If kelvin enter 1. If Celsius enter 2: '))
+        
+        if v > 2 or v < 1:
+            raise ValueError
+        
+        break
+    except (ValueError, KeyError):
+        print('Oops! Not an available option.')
+    
 if v == 2:
     target = target + 273
-elif v > 2 or v < 1:
-    raise ValueError('Not a valid entry.')
 
 # Ask user for material
 material = str(input('Material: '))
