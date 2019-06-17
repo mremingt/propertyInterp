@@ -54,9 +54,18 @@ while True:
         
 
 ## Begin Interpolation
-if target > temp[-1] or target < temp[0]: # Check Target is within the table
-    raise ValueError("Oops! That temperature is not in this table")
-    
+# Check Target is within the table
+while True:
+    try:
+        if target > temp[-1] or target < temp[0]:
+            raise ValueError
+        else:
+            break
+    except ValueError:
+        print("Oops! That temperature is not in this table")
+        target = float(input('Temperature: '))
+
+
 if (target in temp): # Test for exact match in table
     print('')
     print('Temp','\t', prop)
@@ -71,9 +80,10 @@ else:
             
             y2 = yValues[item]
             y1 = yValues[item-1]
+            break
     
     
-            target_y = (target - x1)/(x2-x1)*(y2 - y1) + y1 # Interpolate
+    target_y = (target - x1)/(x2-x1)*(y2 - y1) + y1 # Interpolate
 
     print('')
     print('Temp', '\t', prop)
