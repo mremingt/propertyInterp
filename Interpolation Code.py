@@ -1,3 +1,24 @@
+"""
+Author: Michael Remington
+Date: 6/20/2019
+
+Code written to make repeated interpolation easy for heat transfer problems.
+
+Inputs:
+-------
+    User prompted responses
+    Property files in .txt format, labeled as material.txt that follow a specific 
+    format. 
+        properties
+        units
+        magnitude level
+
+Outputs:
+--------
+    Temperature and associated property
+    
+"""
+
 import numpy as np
 
 running = True
